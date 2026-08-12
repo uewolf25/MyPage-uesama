@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homelab — うえ様。</title>
+<meta name="description" content="うえ様。の自宅サーバ（Ubuntu / Docker / Cloudflare Tunnel）の構成と、そこに載っているサービスの記録。">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="page">
+  <div class="wrap">
+
+    <header class="site-header">
+      <a class="brand" href="#top">fridge-mate.jp</a>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#hardware">Hardware</a>
+        <a href="#stack">Stack</a>
+        <a href="#services">Services</a>
+        <a href="#network">Network</a>
+        <a href="#log">Log</a>
+      </nav>
+    </header>
+
+    <section id="top" class="hero">
+      <p class="eyebrow">HOME SERVER / 自宅サーバ</p>
+      <h1>Homelab</h1>
+      <p class="lede">自宅の一台で動かしているサーバの構成と、そこに載っているサービスの記録。Linux、Docker、ネットワークまわりの実験場を兼ねています。</p>
+    </section>
+
+    <section class="status">
+      <dl class="status-grid">
+        <div class="stat">
+          <dt>UPTIME</dt>
+          <dd id="stat-uptime">—</dd>
+        </div>
+        <div class="stat">
+          <dt>CONTAINERS</dt>
+          <dd id="stat-containers">—</dd>
+        </div>
+        <div class="stat">
+          <dt>SERVICES</dt>
+          <dd id="stat-services">4</dd>
+        </div>
+        <div class="stat">
+          <dt>SINCE</dt>
+          <dd>2024</dd>
+        </div>
+      </dl>
+      <p class="note">数値は /api/status から取得。取得できない場合は — を表示。</p>
+    </section>
+
+    <section id="about" class="row">
+      <h2 class="sec-label">ABOUT</h2>
+      <div>
+        <p class="row-lede">うえ様。 — 平日はマイクロソフト系、Windows Server の運用が本業。</p>
+        <p class="row-body">プライベートでは Linux と自宅サーバ、Web 開発。仕事で触らない領域を家で触るためのサーバなので、構成は思いつきで変わります。</p>
+        <ul class="tags">
+          <li>Linux</li>
+          <li>Docker</li>
+          <li>Proxmox</li>
+          <li>Networking</li>
+          <li>Programming</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="hardware" class="row">
+      <h2 class="sec-label">HARDWARE</h2>
+      <div>
+        <dl class="spec">
+          <dt>CPU</dt>
+          <dd>Intel Core i5 第12世代</dd>
+          <dt>MEMORY</dt>
+          <dd>32GB DDR4</dd>
+          <dt>SYSTEM</dt>
+          <dd>NVMe SSD</dd>
+          <dt>STORAGE</dt>
+          <dd>HDD / RAID 構成</dd>
+          <dt class="last">POWER</dt>
+          <dd class="last muted">実測値を計り次第記載</dd>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 実機写真を用意したら <div class="photo-frame"> を <img class="photo-img" src="..." alt="..."> に差し替え -->
+    <figure class="photo">
+      <div class="photo-frame"><span>実機 / ラックの写真をここに</span></div>
+      <figcaption>構成図または筐体の写真。既存の SV-structure.jpg を差し替え可。</figcaption>
+    </figure>
+
+    <section id="stack" class="row">
+      <h2 class="sec-label">STACK</h2>
+      <div class="stack-grid">
+        <div>
+          <p class="stack-label">OS / RUNTIME</p>
+          <p class="stack-body">Ubuntu Server<br>Docker / Compose</p>
+        </div>
+        <div>
+          <p class="stack-label">EDGE</p>
+          <p class="stack-body">Nginx<br>Cloudflare Tunnel</p>
+        </div>
+        <div>
+          <p class="stack-label">OPS</p>
+          <p class="stack-body muted">監視 / バックポリシー<br>（内容を追記予定）</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="services">
+      <h2 class="sec-label">SERVICES</h2>
+      <!-- href="#" は仮。各サービスの URL が決まったら差し替え -->
+      <ul class="list">
+        <li>
+          <a class="service-row" href="#">
+            <span class="service-name">Immich</span>
+            <span class="service-desc">プライベートネットワーク内で使う写真クラウド。</span>
+            <span class="service-scope">PRIVATE</span>
+          </a>
+        </li>
+        <li>
+          <a class="service-row" href="#">
+            <span class="service-name">Cloudflared</span>
+            <span class="service-desc">Cloudflare とアウトバウンド通信するトンネル。ポート開放が不要。</span>
+            <span class="service-scope">EDGE</span>
+          </a>
+        </li>
+        <li>
+          <a class="service-row" href="#">
+            <span class="service-name">Proxy</span>
+            <span class="service-desc">既定で閉塞している各コンテナに、必要なときだけ外向き通信を通す。</span>
+            <span class="service-scope">INTERNAL</span>
+          </a>
+        </li>
+        <li>
+          <a class="service-row" href="#">
+            <span class="service-name">Discord Bot</span>
+            <span class="service-desc">Discord 用の自作ボット。</span>
+            <span class="service-scope">PUBLIC</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section id="network" class="row">
+      <h2 class="sec-label">NETWORK</h2>
+      <div>
+        <p class="row-body top">外部公開はポート開放をせず、Cloudflare Tunnel からのアウトバウンド接続のみで受けています。各コンテナは既定で外向き通信を閉じ、必要なものだけプロキシ経由でインターネットに出る構成です。</p>
+        <ol class="flow">
+          <li><span class="flow-n">01</span><span>クライアント → Cloudflare</span></li>
+          <li><span class="flow-n">02</span><span>Cloudflare Tunnel（cloudflared、アウトバウンドのみ）</span></li>
+          <li><span class="flow-n">03</span><span>Nginx でホスト名ごとに振り分け</span></li>
+          <li class="last"><span class="flow-n">04</span><span>各サービスコンテナ（内部ネットワーク）</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="log" class="row">
+      <h2 class="sec-label">LOG</h2>
+      <div>
+        <ul class="list">
+          <li>
+            <a class="log-row" href="./blog.html">
+              <time>記載予定</time>
+              <span>Docker環境を再構築した話 — コンテナ構成の整理メモ</span>
+            </a>
+          </li>
+          <li>
+            <a class="log-row" href="./blog.html">
+              <time>記載予定</time>
+              <span>記事タイトルをここに</span>
+            </a>
+          </li>
+          <li>
+            <a class="log-row" href="./blog.html">
+              <time>記載予定</time>
+              <span>記事タイトルをここに</span>
+            </a>
+          </li>
+        </ul>
+        <p class="note">記事一覧は <a href="./blog.html">/blog</a></p>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>© 2026 うえ様。</span>
+      <span>Self hosted — Ubuntu / Docker / Cloudflare</span>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // /api/status が生きていれば数値を差し込む。落ちていれば HTML の初期値（—）のまま。
+  fetch("/api/status")
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d) return;
+      var set = function (id, v) {
+        if (v == null) return;
+        document.getElementById(id).textContent = String(v);
+      };
+      set("stat-uptime", d.uptime);
+      set("stat-containers", d.containers);
+      set("stat-services", d.services);
+    })
+    .catch(function () {});
+</script>
+</body>
+</html>
